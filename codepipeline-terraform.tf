@@ -38,59 +38,53 @@ resource "aws_codepipeline" "codepipeline_terraform" {
     }
   }
   stage {
-    name = "Plan"
+    name = "Plan-and-Apply"
 
     action {
-      name             = "Build"
+      name             = "Plan"
       category         = "Build"
       owner            = "AWS"
       provider         = "CodeBuild"
       input_artifacts  = ["source_output"]
       output_artifacts = ["plan_output"]
       version          = "1"
+      run_order        = 1
 
       configuration = {
         ProjectName = aws_codebuild_project.terraform_plan.name
       }
     }
-  }
 
-  dynamic stage {
-    for_each = var.cp_tf_manual_approval
-
-    content {
-      name = "Approve"
-  
-      action {
-        name      = "Approval"
-        category  = "Approval"
-        owner     = "AWS"
-        provider  = "Manual"
-        version   = "1"
-  
-        configuration = {
+    dynamic "action" {
+      for_each = var.cp_tf_manual_approval
+      content {
+        name             = "Approval"
+        category         = "Approval"
+        owner            = "AWS"
+        provider         = "Manual"
+        configuration    = {
           CustomData         = "Please review the codebuild output and verify the changes."
           ExternalEntityLink = " "
         }
+        input_artifacts  = []
+        output_artifacts = []
+        version          = "1"
+        run_order        = 2
       }
     }
-  }
-
-  stage {
-    name = "Apply"
 
     action {
-      name            = "Build"
-      category        = "Build"
-      owner           = "AWS"
-      provider        = "CodeBuild"
+      name             = "Apply"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
       #input_artifacts = ["source_output", "plan_output"]
-      input_artifacts = ["plan_output"]
-      version         = "1"
+      input_artifacts  = ["plan_output"]
+      version          = "1"
+      run_order        = 3
 
       configuration = {
         ProjectName   = aws_codebuild_project.terraform_apply.name,
-        #PrimarySource = "source_output"
         PrimarySource = "plan_output"
       }
     }
