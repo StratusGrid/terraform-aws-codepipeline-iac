@@ -39,11 +39,11 @@ phases:
       - terraform -v
   pre_build:
     commands:
-      - terraform init -backend-config=./init-tfvars/${var.cb_env_name}.tfvars
+      - terraform init -backend-config=./init-tfvars/${var.cb_env_name}.tfvars -input=false
   build:
     commands:
       - echo Build started on `date`
-      - terraform plan -out=tfplan -var-file=./apply-tfvars/${var.cb_env_name}.tfvars
+      - terraform plan -out=tfplan -var-file=./apply-tfvars/${var.cb_env_name}.tfvars -input=false
   post_build:
     commands:
       - echo Entered the post_build phase...
@@ -104,11 +104,11 @@ phases:
       - terraform -v
   pre_build:
     commands:
-      - terraform init -backend-config=./init-tfvars/${var.cb_env_name}.tfvars
+      - terraform init -backend-config=./init-tfvars/${var.cb_env_name}.tfvars -input=false
   build:
     commands:
       - echo Build started on `date`
-      - terraform apply tfplan
+      - terraform apply -input=false tfplan
   post_build:
     commands:
       - echo Entered the post_build phase...
