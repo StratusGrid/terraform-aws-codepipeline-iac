@@ -36,14 +36,13 @@ phases:
       - wget -q https://releases.hashicorp.com/terraform/$${TERRAFORM_VERSION}/terraform_$${TERRAFORM_VERSION}_linux_amd64.zip
       - unzip ./terraform_$${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin/
       - rm terraform_$${TERRAFORM_VERSION}_linux_amd64.zip
-      - terraform -v
   pre_build:
     commands:
-      - terraform init -backend-config=./init-tfvars/${var.cb_env_name}.tfvars -input=false
+      - terraform init -backend-config=./init-tfvars/${var.cb_env_name}.tfvars
   build:
     commands:
       - echo Build started on `date`
-      - terraform plan -out=tfplan -var-file=./apply-tfvars/${var.cb_env_name}.tfvars -input=false
+      - terraform plan -out=tfplan -var-file=./apply-tfvars/${var.cb_env_name}.tfvars
   post_build:
     commands:
       - echo Entered the post_build phase...
@@ -104,7 +103,7 @@ phases:
       - terraform -v
   pre_build:
     commands:
-      - terraform init -backend-config=./init-tfvars/${var.cb_env_name}.tfvars -input=false
+      - terraform init -backend-config=./init-tfvars/${var.cb_env_name}.tfvars
   build:
     commands:
       - echo Build started on `date`
