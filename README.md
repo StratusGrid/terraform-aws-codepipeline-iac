@@ -12,7 +12,7 @@ NOTE: Due to a bug in Terraform, we must ignore_changes on the github configurat
 ### Example:
 ```
 module "cloudfront_codepipeline" {
-  source                = "./modules/iac-pipeline"
+  source                = "github.com/StratusGrid/terraform-aws-codepipeline-iac"
   name                  = "${var.name_prefix}-unique-name${local.name_suffix}"
   cp_tf_manual_approval = [true] # leave array empty to not have a manual approval step
   codebuild_iam_policy  = local.cloudfront_codebuild_policy
