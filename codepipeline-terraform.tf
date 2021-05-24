@@ -11,7 +11,7 @@ resource "aws_codepipeline" "codepipeline_terraform" {
     type     = "S3"
   }
   tags = merge(
-    var.input_tags,
+    local.common_tags,
     {
       "Name" = "${var.name}-cp-terraform"
     },
