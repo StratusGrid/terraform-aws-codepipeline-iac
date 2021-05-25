@@ -56,7 +56,7 @@ BUILDSPEC
 
   #- tfplan
   tags = merge(
-    var.input_tags,
+    local.common_tags,
     {
       "Name" = "${var.name}-tf-plan"
     },
@@ -116,7 +116,7 @@ BUILDSPEC
   #- cp $CODEBUILD_SRC_DIR_plan_output/tfplan .
 
   tags = merge(
-    var.input_tags,
+    local.common_tags,
     {
       "Name" = "${var.name}-tf-apply"
     },
