@@ -1,10 +1,7 @@
-#this bucket is used to store config files, etc. which are used for processing.
+# This bucket is used to store config files, etc. which are used for processing
+
 resource "aws_s3_bucket" "pipeline_resources_bucket" {
   bucket = var.name
-
-  versioning {
-    enabled = true
-  }
 
   lifecycle {
     prevent_destroy = false
@@ -40,8 +37,10 @@ resource "aws_s3_bucket" "pipeline_resources_bucket" {
   tags = merge(var.input_tags, {})
 }
 
-# this bucket is used for logging
-# to be filled in later
-#resource "aws_kms_key" "videotoken_resources_key" {
-#  description = "This key is used to encrypt bucket objects"
-#}
+# Versioning enabled in Pipeline bucket
+resource "aws_s3_bucket_versioning" "pipeline_resources_bucket" {
+  bucket = aws_s3_bucket.pipeline_resources_bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
