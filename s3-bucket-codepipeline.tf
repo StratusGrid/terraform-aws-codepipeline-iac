@@ -1,24 +1,9 @@
 # This bucket is used to store config files, etc. which are used for processing
-
 resource "aws_s3_bucket" "pipeline_resources_bucket" {
   bucket = var.name
 
   lifecycle {
     prevent_destroy = false
-  }
-
-  lifecycle_rule {
-    id      = "artifacts"
-    enabled = true
-
-    transition {
-      days          = 30
-      storage_class = "STANDARD_IA"
-    }
-
-    expiration {
-      days = 90
-    }
   }
 
 #    logging {
@@ -33,6 +18,26 @@ resource "aws_s3_bucket" "pipeline_resources_bucket" {
 resource "aws_s3_bucket_versioning" "pipeline_resources_bucket" {
   bucket = aws_s3_bucket.pipeline_resources_bucket.id
   versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+# Lifecycle options for Pipeline bucket
+resource "aws_s3_bucket_lifecycle_configuration" "pipeline_resources_bucket" {
+  bucket = aws_s3_bucket.pipeline_resources_bucket.id
+
+  rule {
+    id = "artifacts"
+
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+
+    expiration {
+      days = 90
+    }
+
     status = "Enabled"
   }
 }
