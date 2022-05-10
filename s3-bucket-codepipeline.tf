@@ -26,14 +26,6 @@ resource "aws_s3_bucket" "pipeline_resources_bucket" {
 #      target_prefix = "s3/${var.name}/"
 #    }
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
   tags = merge(var.input_tags, {})
 }
 
@@ -42,5 +34,17 @@ resource "aws_s3_bucket_versioning" "pipeline_resources_bucket" {
   bucket = aws_s3_bucket.pipeline_resources_bucket.id
   versioning_configuration {
     status = "Enabled"
+  }
+}
+
+# Enforcing Server Side Encryption in Pipeline bucket
+resource "aws_s3_bucket_server_side_encryption_configuration" "pipeline_resources_bucket" {
+  bucket = aws_s3_bucket.pipeline_resources_bucket.bucket
+
+  rule {
+    bucket_key_enabled = false
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
   }
 }
