@@ -97,7 +97,7 @@ variable "cp_source_poll_for_changes" {
 }
 
 variable "cp_tf_manual_approval" {
-  type        = list
+  type        = list(any)
   default     = []
   description = "determines if terraform pipeline requires manual approval for application."
 }

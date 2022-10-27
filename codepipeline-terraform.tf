@@ -11,7 +11,7 @@ resource "aws_codepipeline" "codepipeline_terraform" {
     type     = "S3"
   }
   tags = merge(
-    var.input_tags,
+    local.common_tags,
     {
       "Name" = "${var.name}-cp-terraform"
     },
@@ -29,11 +29,11 @@ resource "aws_codepipeline" "codepipeline_terraform" {
 
 
       configuration = {
-        Owner                 = var.cp_source_owner
-        Repo                  = var.cp_source_repo
-        Branch                = var.cp_source_branch
-        OAuthToken            = var.cp_source_oauth_token
-        PollForSourceChanges  = var.cp_source_poll_for_changes
+        Owner                = var.cp_source_owner
+        Repo                 = var.cp_source_repo
+        Branch               = var.cp_source_branch
+        OAuthToken           = var.cp_source_oauth_token
+        PollForSourceChanges = var.cp_source_poll_for_changes
       }
     }
   }
@@ -58,11 +58,11 @@ resource "aws_codepipeline" "codepipeline_terraform" {
     dynamic "action" {
       for_each = var.cp_tf_manual_approval
       content {
-        name             = "Approval"
-        category         = "Approval"
-        owner            = "AWS"
-        provider         = "Manual"
-        configuration    = {
+        name     = "Approval"
+        category = "Approval"
+        owner    = "AWS"
+        provider = "Manual"
+        configuration = {
           CustomData         = "Please review the codebuild output and verify the changes."
           ExternalEntityLink = " "
         }
@@ -74,14 +74,14 @@ resource "aws_codepipeline" "codepipeline_terraform" {
     }
 
     action {
-      name             = "Apply"
-      category         = "Build"
-      owner            = "AWS"
-      provider         = "CodeBuild"
+      name     = "Apply"
+      category = "Build"
+      owner    = "AWS"
+      provider = "CodeBuild"
       #input_artifacts = ["source_output", "plan_output"]
-      input_artifacts  = ["plan_output"]
-      version          = "1"
-      run_order        = 3
+      input_artifacts = ["plan_output"]
+      version         = "1"
+      run_order       = 3
 
       configuration = {
         ProjectName   = aws_codebuild_project.terraform_apply.name,
