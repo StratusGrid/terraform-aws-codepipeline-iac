@@ -18,7 +18,7 @@ resource "aws_iam_role" "codebuild_terraform" {
 }
 EOF
 
-  tags = var.input_tags
+  tags = local.common_tags
 }
 
 resource "aws_iam_role_policy" "codebuild_policy_terraform" {

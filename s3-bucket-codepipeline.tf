@@ -38,5 +38,11 @@ resource "aws_s3_bucket" "pipeline_resources_bucket" {
     }
   }
 
-  tags = merge(var.input_tags, {})
+  tags = merge(local.common_tags, {})
 }
+
+# this bucket is used for logging
+# to be filled in later
+#resource "aws_kms_key" "videotoken_resources_key" {
+#  description = "This key is used to encrypt bucket objects"
+#}
