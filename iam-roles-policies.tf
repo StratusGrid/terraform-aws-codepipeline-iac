@@ -1,4 +1,5 @@
 ### CODEBUILD TERRAFORM IAM ROLE ###
+#tfsec:ignore:aws-iam-no-policy-wildcards -- Ignores warning on wildcarded resource
 resource "aws_iam_role" "codebuild_terraform" {
   name = "${var.name}-build"
 
@@ -17,7 +18,7 @@ resource "aws_iam_role" "codebuild_terraform" {
 }
 EOF
 
-  tags = var.input_tags
+  tags = local.common_tags
 }
 
 resource "aws_iam_role_policy" "codebuild_policy_terraform" {
@@ -25,8 +26,6 @@ resource "aws_iam_role_policy" "codebuild_policy_terraform" {
   role   = aws_iam_role.codebuild_terraform.id
   policy = var.codebuild_iam_policy
 }
-
-
 
 ### CODEPIPELINE TERRAFORM IAM ROLE ###
 resource "aws_iam_role" "codepipeline_role_terraform" {
@@ -48,6 +47,7 @@ resource "aws_iam_role" "codepipeline_role_terraform" {
 EOF
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards -- Ignores warning on wildcarded resource
 resource "aws_iam_role_policy" "codepipeline_policy_terraform" {
   name = "${var.name}-codepipeline-policy"
   role = aws_iam_role.codepipeline_role_terraform.id
