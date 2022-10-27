@@ -1,0 +1,52 @@
+version: ""
+
+formatter: markdown table
+
+name: terraform-aws-codepipeline-iac
+
+content: |-
+  # terraform-aws-codepipeline-iac
+  
+  GitHub: [StratusGrid/terraform-aws-codepipeline-iac](https://github.com/StratusGrid/terraform-aws-codepipeline-iac)
+
+  This repository lets you create a codepipeline and supporting codebuilds etc. for automatically deploying terraform code.
+
+  <span style="color:red">NOTE:</span> Due to a bug in Terraform, we must ignore_changes on the github configuration to prevent it from attempting to update oauthtoken on every apply. If this ever needs to be updated, the existing pipeline will be destroyed and recreated; OR the following code block can simply be removed from the codepipeline-terraform.tf file.
+  ```
+  lifecycle {
+    ignore_changes = [stage[0].action[0].configuration]
+  }
+  ```
+
+  ## Example
+  ```hcl
+  {{ include "examples/example1.tfnot" }}
+  ```
+  ---
+
+  {{ .Requirements }}
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  ---
+
+  <span style="color:red">Note:</span> Manual changes to the README will be overwritten when the documentation is updated. To update the documentation, run `terraform-docs -c .config/.terraform-docs.yml .`
+
+sections:
+  show:
+    - requirements
+    - resources
+    - inputs
+    - outputs
+
+sort:
+  enabled: true
+  by: name
+
+output:
+  file: README.md
+  mode: replace
