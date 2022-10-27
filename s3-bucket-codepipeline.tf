@@ -6,10 +6,10 @@ resource "aws_s3_bucket" "pipeline_resources_bucket" {
     prevent_destroy = false
   }
 
-#    logging {
-#      target_bucket = var.s3_log_target_bucket
-#      target_prefix = "s3/${var.name}/"
-#    }
+  #    logging {
+  #      target_bucket = var.s3_log_target_bucket
+  #      target_prefix = "s3/${var.name}/"
+  #    }
 
   tags = merge(var.input_tags, {})
 }
