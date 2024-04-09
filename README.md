@@ -1,20 +1,31 @@
 <!-- BEGIN_TF_DOCS -->
-# terraform-aws-codepipeline-iac
+<p align="center">                                                                                                                                            
+                                                                                
+  <img src="https://github.com/StratusGrid/terraform-readme-template/blob/main/header/stratusgrid-logo-smaller.jpg?raw=true" />
+  <p align="center">                                                           
+    <a href="https://stratusgrid.com/book-a-consultation">Contact Us Test</a> |                  
+    <a href="https://stratusgrid.com/cloud-cost-optimization-dashboard">Stratusphere FinOps</a> |
+    <a href="https://stratusgrid.com">StratusGrid Home</a> |
+    <a href="https://stratusgrid.com/blog">Blog</a>
+  </p>                    
+</p>
 
-GitHub: [StratusGrid/terraform-aws-codepipeline-iac](https://github.com/StratusGrid/terraform-aws-codepipeline-iac)
+ # terraform-aws-codepipeline-iac
+ 
+ GitHub: [StratusGrid/terraform-aws-codepipeline-iac](https://github.com/StratusGrid/terraform-aws-codepipeline-iac)
 
-This repository lets you create a codepipeline and supporting codebuilds etc. for automatically deploying terraform code.
+ This repository lets you create a codepipeline and supporting codebuilds etc. for automatically deploying terraform code.
 
-<span style="color:red">NOTE:</span> Due to a bug in Terraform, we must ignore_changes on the github configuration to prevent it from attempting to update oauthtoken on every apply. If this ever needs to be updated, the existing pipeline will be destroyed and recreated; OR the following code block can simply be removed from the codepipeline-terraform.tf file.
-```
-lifecycle {
-ignore_changes = [stage[0].action[0].configuration]
-}
-```
+ <span style="color:red">NOTE:</span> Due to a bug in Terraform, we must ignore_changes on the github configuration to prevent it from attempting to update oauthtoken on every apply. If this ever needs to be updated, the existing pipeline will be destroyed and recreated; OR the following code block can simply be removed from the codepipeline-terraform.tf file.
+ ```
+ lifecycle {
+   ignore_changes = [stage[0].action[0].configuration]
+ }
+ ```
 
-## Example
-```hcl
-module "cloudfront_codepipeline" {
+ ## Example
+ ```hcl
+ module "cloudfront_codepipeline" {
   source                = "github.com/StratusGrid/terraform-aws-codepipeline-iac"
   name                  = "${var.name_prefix}-unique-name${local.name_suffix}"
   cp_tf_manual_approval = [true] # leave array empty to not have a manual approval step
@@ -115,17 +126,17 @@ locals {
 }
 POLICY
 }
-```
----
+ ```
+ ---
 
-## Requirements
+ ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.12 |
 
-## Resources
+ ## Resources
 
 | Name | Type |
 |------|------|
@@ -138,7 +149,7 @@ POLICY
 | [aws_iam_role_policy.codepipeline_policy_terraform](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_s3_bucket.pipeline_resources_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 
-## Inputs
+ ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
@@ -160,13 +171,13 @@ POLICY
 | <a name="input_input_tags"></a> [input\_tags](#input\_input\_tags) | Map of tags to apply to resources | `map(string)` | <pre>{<br>  "Developer": "StratusGrid",<br>  "Provisioner": "Terraform"<br>}</pre> | no |
 | <a name="input_name"></a> [name](#input\_name) | name to prepend to all resource names within module | `string` | `"codepipline-module"` | no |
 
-## Outputs
+ ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_codepipeline_resources_bucket_arn"></a> [codepipeline\_resources\_bucket\_arn](#output\_codepipeline\_resources\_bucket\_arn) | outputs the full arn of the bucket created |
 
----
+ ---
 
-<span style="color:red">Note:</span> Manual changes to the README will be overwritten when the documentation is updated. To update the documentation, run `terraform-docs -c .config/.terraform-docs.yml .`
+ <span style="color:red">Note:</span> Manual changes to the README will be overwritten when the documentation is updated. To update the documentation, run `terraform-docs -c .config/.terraform-docs.yml .`
 <!-- END_TF_DOCS -->
